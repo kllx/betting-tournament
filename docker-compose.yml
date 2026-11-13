@@ -1,12 +1,13 @@
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:16.15-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: betting_tournament
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "55432:5432"
+      - "127.0.0.1:55432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d betting_tournament"]
       interval: 2s
@@ -16,10 +17,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   rabbitmq:
-    image: rabbitmq:3-management-alpine
+    image: rabbitmq:3.13.7-management-alpine
+    restart: unless-stopped
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 2s
@@ -29,11 +31,12 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
 
   redis:
-    image: redis:7-alpine
+    image: redis:7.4.12-alpine
+    restart: unless-stopped
     command:
       ["redis-server", "--appendonly", "yes", "--appendfsync", "everysec"]
     ports:
-      - "56379:6379"
+      - "127.0.0.1:56379:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 2s

@@ -52,7 +52,7 @@ PostgreSQL остается источником истины. Для чтени
 
 ## Запуск
 
-Требуются Node.js 22, npm и Docker Compose.
+Требуются Node.js 22, npm 10 и Docker Compose. Диапазоны версий зафиксированы в `engines` в `package.json`.
 
 ```bash
 npm ci
